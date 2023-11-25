@@ -1,0 +1,84 @@
+#docker-compose.yml
+version: '3'
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init/db:/docker-entrypoint-initdb.d/
+    command: postgres -c wal_level=logical
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  hasura:
+    container_name: hasura
+    image: hasura/graphql-engine:v2.29.0
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    #   - keycloak
+    ports:
+      - '6080:8080'
+    volumes:
+      - ./hasura/metadata:/hasura-metadata
+    environment:
+      ## postgres database to store Hasura metadata
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/hasura_metadata
+      HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      HASURA_GRAPHQL_LOG_LEVEL: warn
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: 'true'
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## enable jwt secret when keycloak realm is ready
+      HASURA_GRAPHQL_JWT_SECRET: '{ "type": "RS256", "jwk_url": "http://keycloak:8080/realms/development/protocol/openid-connect/certs" }'
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
+      HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 30
+  #   pgweb:
+  #     ## To view tables in Postgres
+  #     container_name: pgweb
+  #     image: sosedoff/pgweb:latest
+  #     restart: unless-stopped
+  #     ports:
+  #       - '8081:8081'
+  #     environment:
+  #       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+  #     depends_on:
+  #       - postgres
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:22.0.5
+    command: ['start-dev']
+    # Uncomment following if you want to import realm configuration on start up
+    # command: ['start-dev', '--import-realm']
+    environment:
+      ## https://www.keycloak.org/server/all-config
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password123
+      KC_DB: postgres
+      KC_DB_PASSWORD: postgres_pass
+      KC_DB_USERNAME: postgres
+      KC_DB_SCHEMA: public
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak_db
+      KC_HOSTNAME: localhost
+    ports:
+      - 8180:8080
+    depends_on:
+      - postgres
+# Uncomment following if you want to import realm configuration on start up
+# volumes:
+#     - ./realm-export.json:/opt/keycloak/data/import/realm.json:ro

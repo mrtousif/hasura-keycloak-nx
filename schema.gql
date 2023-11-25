@@ -1,0 +1,16 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserProfile {
+  sub: String!
+  email_verified: Boolean!
+  email: String!
+  preferred_username: String!
+  error: String
+}
+
+type Query {
+  health: String!
+  userProfile: UserProfile!
+}

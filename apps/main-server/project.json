@@ -1,0 +1,76 @@
+{
+  "name": "main-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/main-server/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/main-server",
+        "main": "apps/main-server/src/main.ts",
+        "tsConfig": "apps/main-server/tsconfig.app.json",
+        "assets": ["apps/main-server/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/main-server/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "main-server:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "main-server:build:development"
+        },
+        "production": {
+          "buildTarget": "main-server:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/main-server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/main-server/jest.config.ts"
+      }
+    },
+    "dev": {
+      "command": "dotenv -e apps/main-server/.env.development -- nx run main-server:serve:development"
+    },
+    "gqlGenerate": {
+      "command": "dotenv -e apps/main-server/.env.development -- graphql-codegen --config apps/main-server/codegen.ts"
+    },
+    "kyselyGen": {
+      "command": "dotenv -e apps/main-server/.env.development -- kysely-codegen"
+    },
+    "seed-script": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/main-server",
+        "commands": [
+          "dotenv -e .env.development -- ts-node --project tsconfig.app.json seeder/index.ts"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

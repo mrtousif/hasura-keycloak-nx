@@ -1,0 +1,59 @@
+table:
+  name: users
+  schema: public
+array_relationships:
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: author
+        table:
+          name: posts
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - auth_id
+        - email
+        - name
+        - phone
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - email
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - auth_id
+        - id
+      filter:
+        auth_id:
+          _eq: X-Hasura-User-Id
+      limit: 1
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - email
+        - name
+        - phone
+      filter:
+        auth_id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        auth_id:
+          _eq: X-Hasura-User-Id
+      backend_only: true

@@ -1,0 +1,29 @@
+# https://taskfile.dev
+
+version: '3'
+
+env:
+  ENV: development
+
+dotenv: ['.env', '.env.{{.ENV}}']
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  hasura:
+    cmds:
+      - npm run hasura {{.CLI_ARGS}}
+
+  composeUp:
+    cmds:
+      - docker-compose --env-file ./.env.development up
+
+  composeDown:
+    cmds:
+      - docker-compose --env-file ./.env.development down --remove-orphans
+
+  dockerVolume:
+    cmds:
+      - echo "Removing Docker volumes"
+      - docker volume rm $(docker volume ls -q)
