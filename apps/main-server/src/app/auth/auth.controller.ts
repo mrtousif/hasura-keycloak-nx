@@ -42,7 +42,7 @@ export class AuthController {
     @Headers() headers: Headers,
     @Response() res: FastifyReply
   ) {
-    res.redirect(303, '/api');
+    res.redirect(303, '/api/auth/user');
   }
 
   @Get('/logout')

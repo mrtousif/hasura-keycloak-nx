@@ -13,7 +13,7 @@ import {
   UserinfoResponse,
 } from 'openid-client';
 
-import { InjectEnvalid, Config, config } from '../config/index';
+import { InjectEnvalid, Config } from '../config/index';
 import { GqlSdk, InjectSdk } from '../sdk/sdk.module';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -28,12 +28,12 @@ gql`
     }
   }
 
-  mutation updateUserById($id: uuid!, $input: users_set_input!) {
-    update_users_by_pk(pk_columns: { id: $id }, _set: $input) {
-      email
-      id
-      name
-      phone
+  mutation updateUserByAuthId($auth_id: uuid!, $input: users_set_input!) {
+    update_users(where: { auth_id: { _eq: $auth_id } }, _set: $input) {
+      returning {
+        id
+        email
+      }
     }
   }
 
@@ -116,25 +116,25 @@ export class AuthService {
     try {
       this.logger.debug(
         {
-          id: input.id,
-          email: input.email,
+          input,
         },
         'Creating user'
       );
       const { insert_users_one } = await this.sdk.createUser({
         input: {
-          id: input.id,
+          auth_id: input.authId,
           email: input.email,
           name,
         },
       });
-      this.logger.log('User created', insert_users_one);
+      this.logger.log({ insert_users_one }, 'User created');
     } catch (error) {
       if (error.message.includes('Uniqueness violation')) {
-        this.logger.debug({ id: input.id }, 'Updating User');
-        this.sdk.updateUserById({
-          id: input.id,
-          input: { ...input, name },
+        this.logger.debug({ authId: input.authId }, 'Updating User');
+        const { email } = input;
+        this.sdk.updateUserByAuthId({
+          auth_id: input.authId,
+          input: { email },
         });
       } else {
         this.logger.error(error);

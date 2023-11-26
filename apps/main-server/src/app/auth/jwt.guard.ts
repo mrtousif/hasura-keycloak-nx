@@ -37,10 +37,7 @@ export class JwtGuard implements CanActivate {
       let token = this.getToken(request);
 
       const user = this.jwtService.verify<UserJWT>(token);
-      this.logger.debug(
-        { email_verified: user.email_verified },
-        `USER:${user.sub}`
-      );
+      this.logger.debug({ user }, `USER:${user.sub}`);
       const refreshToken = request.cookies['refresh_token'];
 
       if (Date.now() >= user.exp * 1000 && refreshToken) {
@@ -78,8 +75,8 @@ export class JwtGuard implements CanActivate {
           const user = await this.authService.getUserInfo(result.access_token);
           request.user = user;
           await this.authService.createOrUpdateUser({
-            id: user.sub,
-            name: user.given_name,
+            authId: user.sub,
+            name: user.given_name || user.preferred_username,
             email: user.email,
           });
 
@@ -100,6 +97,9 @@ export class JwtGuard implements CanActivate {
     response: FastifyReply,
     sessionKey: string
   ) {
+    if (!response.redirect) {
+      throw new UnauthorizedException();
+    }
     const params = {
       state: generators.state(),
       nonce: generators.nonce(),
@@ -112,11 +112,8 @@ export class JwtGuard implements CanActivate {
     });
 
     this.logger.debug(`Redirecting to auth url ${authUrl}`);
-    if (response.redirect) {
-      response.redirect(authUrl);
-    } else {
-      throw new UnauthorizedException();
-    }
+
+    response.redirect(authUrl);
   }
 
   protected getRequest<T>(context: ExecutionContext): T {

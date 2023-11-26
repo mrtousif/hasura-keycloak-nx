@@ -29,8 +29,10 @@ async function bootstrap() {
 
   const logger = app.get(Logger);
   app.useLogger(logger);
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
   const port = config.PORT;
   await app.listen(port);
   logger.log(

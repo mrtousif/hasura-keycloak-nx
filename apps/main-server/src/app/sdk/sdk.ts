@@ -3,34 +3,21 @@ import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
 import { gql } from 'graphql-request';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T
-> = { [_ in K]?: never };
-export type Incremental<T> =
-  | T
-  | {
-      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-    };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
-  citext: { input: string; output: string };
-  timestamptz: { input: string; output: string };
-  uuid: { input: string; output: string };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  citext: { input: string; output: string; }
+  timestamptz: { input: string; output: string; }
+  uuid: { input: string; output: string; }
 };
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
@@ -130,7 +117,7 @@ export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
   Asc = 'ASC',
   /** descending ordering of the cursor */
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 /** mutation root */
@@ -166,25 +153,30 @@ export type Mutation_Root = {
   update_users_many: Maybe<Array<Maybe<Users_Mutation_Response>>>;
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_PostsArgs = {
   where: Posts_Bool_Exp;
 };
+
 
 /** mutation root */
 export type Mutation_RootDelete_Posts_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_UsersArgs = {
   where: Users_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootDelete_Users_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
+
 
 /** mutation root */
 export type Mutation_RootInsert_PostsArgs = {
@@ -192,11 +184,13 @@ export type Mutation_RootInsert_PostsArgs = {
   on_conflict: InputMaybe<Posts_On_Conflict>;
 };
 
+
 /** mutation root */
 export type Mutation_RootInsert_Posts_OneArgs = {
   object: Posts_Insert_Input;
   on_conflict: InputMaybe<Posts_On_Conflict>;
 };
+
 
 /** mutation root */
 export type Mutation_RootInsert_UsersArgs = {
@@ -204,11 +198,13 @@ export type Mutation_RootInsert_UsersArgs = {
   on_conflict: InputMaybe<Users_On_Conflict>;
 };
 
+
 /** mutation root */
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict: InputMaybe<Users_On_Conflict>;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_PostsArgs = {
@@ -216,16 +212,19 @@ export type Mutation_RootUpdate_PostsArgs = {
   where: Posts_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_Posts_By_PkArgs = {
   _set: InputMaybe<Posts_Set_Input>;
   pk_columns: Posts_Pk_Columns_Input;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_Posts_ManyArgs = {
   updates: Array<Posts_Updates>;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_UsersArgs = {
@@ -233,11 +232,13 @@ export type Mutation_RootUpdate_UsersArgs = {
   where: Users_Bool_Exp;
 };
 
+
 /** mutation root */
 export type Mutation_RootUpdate_Users_By_PkArgs = {
   _set: InputMaybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
 };
+
 
 /** mutation root */
 export type Mutation_RootUpdate_Users_ManyArgs = {
@@ -257,7 +258,7 @@ export enum Order_By {
   /** in descending order, nulls first */
   DescNullsFirst = 'desc_nulls_first',
   /** in descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last',
+  DescNullsLast = 'desc_nulls_last'
 }
 
 /** columns and relationships of "posts" */
@@ -316,6 +317,7 @@ export type Posts_Aggregate_Fields = {
   min: Maybe<Posts_Min_Fields>;
 };
 
+
 /** aggregate fields of "posts" */
 export type Posts_Aggregate_FieldsCountArgs = {
   columns: InputMaybe<Array<Posts_Select_Column>>;
@@ -354,7 +356,7 @@ export type Posts_Bool_Exp = {
 /** unique or primary key constraints on table "posts" */
 export enum Posts_Constraint {
   /** unique or primary key constraint on columns "id" */
-  VideosIdPk = 'videos_id_pk',
+  VideosIdPk = 'videos_id_pk'
 }
 
 /** input type for inserting data into table "posts" */
@@ -459,19 +461,19 @@ export enum Posts_Select_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** select "posts_aggregate_bool_exp_bool_and_arguments_columns" columns of table "posts" */
 export enum Posts_Select_Column_Posts_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
-  Published = 'published',
+  Published = 'published'
 }
 
 /** select "posts_aggregate_bool_exp_bool_or_arguments_columns" columns of table "posts" */
 export enum Posts_Select_Column_Posts_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
   /** column name */
-  Published = 'published',
+  Published = 'published'
 }
 
 /** input type for updating data in table "posts" */
@@ -519,7 +521,7 @@ export enum Posts_Update_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 export type Posts_Updates = {
@@ -545,6 +547,7 @@ export type Query_Root = {
   users_by_pk: Maybe<Users>;
 };
 
+
 export type Query_RootPostsArgs = {
   distinct_on: InputMaybe<Array<Posts_Select_Column>>;
   limit: InputMaybe<Scalars['Int']['input']>;
@@ -552,6 +555,7 @@ export type Query_RootPostsArgs = {
   order_by: InputMaybe<Array<Posts_Order_By>>;
   where: InputMaybe<Posts_Bool_Exp>;
 };
+
 
 export type Query_RootPosts_AggregateArgs = {
   distinct_on: InputMaybe<Array<Posts_Select_Column>>;
@@ -561,9 +565,11 @@ export type Query_RootPosts_AggregateArgs = {
   where: InputMaybe<Posts_Bool_Exp>;
 };
 
+
 export type Query_RootPosts_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
+
 
 export type Query_RootUsersArgs = {
   distinct_on: InputMaybe<Array<Users_Select_Column>>;
@@ -573,6 +579,7 @@ export type Query_RootUsersArgs = {
   where: InputMaybe<Users_Bool_Exp>;
 };
 
+
 export type Query_RootUsers_AggregateArgs = {
   distinct_on: InputMaybe<Array<Users_Select_Column>>;
   limit: InputMaybe<Scalars['Int']['input']>;
@@ -580,6 +587,7 @@ export type Query_RootUsers_AggregateArgs = {
   order_by: InputMaybe<Array<Users_Order_By>>;
   where: InputMaybe<Users_Bool_Exp>;
 };
+
 
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars['uuid']['input'];
@@ -605,6 +613,7 @@ export type Subscription_Root = {
   users_stream: Array<Users>;
 };
 
+
 export type Subscription_RootPostsArgs = {
   distinct_on: InputMaybe<Array<Posts_Select_Column>>;
   limit: InputMaybe<Scalars['Int']['input']>;
@@ -612,6 +621,7 @@ export type Subscription_RootPostsArgs = {
   order_by: InputMaybe<Array<Posts_Order_By>>;
   where: InputMaybe<Posts_Bool_Exp>;
 };
+
 
 export type Subscription_RootPosts_AggregateArgs = {
   distinct_on: InputMaybe<Array<Posts_Select_Column>>;
@@ -621,15 +631,18 @@ export type Subscription_RootPosts_AggregateArgs = {
   where: InputMaybe<Posts_Bool_Exp>;
 };
 
+
 export type Subscription_RootPosts_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
+
 
 export type Subscription_RootPosts_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Posts_Stream_Cursor_Input>>;
   where: InputMaybe<Posts_Bool_Exp>;
 };
+
 
 export type Subscription_RootUsersArgs = {
   distinct_on: InputMaybe<Array<Users_Select_Column>>;
@@ -639,6 +652,7 @@ export type Subscription_RootUsersArgs = {
   where: InputMaybe<Users_Bool_Exp>;
 };
 
+
 export type Subscription_RootUsers_AggregateArgs = {
   distinct_on: InputMaybe<Array<Users_Select_Column>>;
   limit: InputMaybe<Scalars['Int']['input']>;
@@ -647,9 +661,11 @@ export type Subscription_RootUsers_AggregateArgs = {
   where: InputMaybe<Users_Bool_Exp>;
 };
 
+
 export type Subscription_RootUsers_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
+
 
 export type Subscription_RootUsers_StreamArgs = {
   batch_size: Scalars['Int']['input'];
@@ -686,6 +702,7 @@ export type Users = {
   updated_at: Maybe<Scalars['timestamptz']['output']>;
 };
 
+
 /** columns and relationships of "users" */
 export type UsersPostsArgs = {
   distinct_on: InputMaybe<Array<Posts_Select_Column>>;
@@ -694,6 +711,7 @@ export type UsersPostsArgs = {
   order_by: InputMaybe<Array<Posts_Order_By>>;
   where: InputMaybe<Posts_Bool_Exp>;
 };
+
 
 /** columns and relationships of "users" */
 export type UsersPosts_AggregateArgs = {
@@ -718,6 +736,7 @@ export type Users_Aggregate_Fields = {
   max: Maybe<Users_Max_Fields>;
   min: Maybe<Users_Min_Fields>;
 };
+
 
 /** aggregate fields of "users" */
 export type Users_Aggregate_FieldsCountArgs = {
@@ -748,7 +767,7 @@ export enum Users_Constraint {
   /** unique or primary key constraint on columns "email" */
   UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint on columns "id" */
-  UsersIdPk = 'users_id_pk',
+  UsersIdPk = 'users_id_pk'
 }
 
 /** input type for inserting data into table "users" */
@@ -842,7 +861,7 @@ export enum Users_Select_Column {
   /** column name */
   Phone = 'phone',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "users" */
@@ -890,7 +909,7 @@ export enum Users_Update_Column {
   /** column name */
   Phone = 'phone',
   /** column name */
-  UpdatedAt = 'updated_at',
+  UpdatedAt = 'updated_at'
 }
 
 export type Users_Updates = {
@@ -917,183 +936,94 @@ export type CreateUserMutationVariables = Exact<{
   input: Users_Insert_Input;
 }>;
 
-export type CreateUserMutation = {
-  __typename?: 'mutation_root';
-  insert_users_one: {
-    __typename?: 'users';
-    id: string;
-    email: string;
-    name: string;
-    phone: string | null;
-    created_at: string;
-  } | null;
-};
 
-export type UpdateUserByIdMutationVariables = Exact<{
-  id: Scalars['uuid']['input'];
+export type CreateUserMutation = { __typename?: 'mutation_root', insert_users_one: { __typename?: 'users', id: string, email: string, name: string, phone: string | null, created_at: string } | null };
+
+export type UpdateUserByAuthIdMutationVariables = Exact<{
+  auth_id: Scalars['uuid']['input'];
   input: Users_Set_Input;
 }>;
 
-export type UpdateUserByIdMutation = {
-  __typename?: 'mutation_root';
-  update_users_by_pk: {
-    __typename?: 'users';
-    email: string;
-    id: string;
-    name: string;
-    phone: string | null;
-  } | null;
-};
+
+export type UpdateUserByAuthIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', returning: Array<{ __typename?: 'users', id: string, email: string }> } | null };
 
 export type FindUserByEmailQueryVariables = Exact<{
   email: Scalars['citext']['input'];
 }>;
 
-export type FindUserByEmailQuery = {
-  __typename?: 'query_root';
-  users: Array<{
-    __typename?: 'users';
-    id: string;
-    name: string;
-    phone: string | null;
-    created_at: string;
-  }>;
-};
+
+export type FindUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: string, name: string, phone: string | null, created_at: string }> };
 
 export type FindUserByIdQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
-export type FindUserByIdQuery = {
-  __typename?: 'query_root';
-  users_by_pk: {
-    __typename?: 'users';
-    id: string;
-    name: string;
-    email: string;
-    phone: string | null;
-    created_at: string;
-  } | null;
-};
+
+export type FindUserByIdQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: string, name: string, email: string, phone: string | null, created_at: string } | null };
+
 
 export const CreateUserDocument = gql`
-  mutation createUser($input: users_insert_input!) {
-    insert_users_one(object: $input) {
+    mutation createUser($input: users_insert_input!) {
+  insert_users_one(object: $input) {
+    id
+    email
+    name
+    phone
+    created_at
+  }
+}
+    `;
+export const UpdateUserByAuthIdDocument = gql`
+    mutation updateUserByAuthId($auth_id: uuid!, $input: users_set_input!) {
+  update_users(where: {auth_id: {_eq: $auth_id}}, _set: $input) {
+    returning {
       id
       email
-      name
-      phone
-      created_at
     }
   }
-`;
-export const UpdateUserByIdDocument = gql`
-  mutation updateUserById($id: uuid!, $input: users_set_input!) {
-    update_users_by_pk(pk_columns: { id: $id }, _set: $input) {
-      email
-      id
-      name
-      phone
-    }
-  }
-`;
+}
+    `;
 export const FindUserByEmailDocument = gql`
-  query findUserByEmail($email: citext!) {
-    users(where: { email: { _eq: $email } }) {
-      id
-      name
-      phone
-      created_at
-    }
+    query findUserByEmail($email: citext!) {
+  users(where: {email: {_eq: $email}}) {
+    id
+    name
+    phone
+    created_at
   }
-`;
+}
+    `;
 export const FindUserByIdDocument = gql`
-  query findUserById($id: uuid!) {
-    users_by_pk(id: $id) {
-      id
-      name
-      email
-      phone
-      created_at
-    }
+    query findUserById($id: uuid!) {
+  users_by_pk(id: $id) {
+    id
+    name
+    email
+    phone
+    created_at
   }
-`;
+}
+    `;
 
-export type SdkFunctionWrapper = <T>(
-  action: (requestHeaders?: Record<string, string>) => Promise<T>,
-  operationName: string,
-  operationType?: string
-) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
-const defaultWrapper: SdkFunctionWrapper = (
-  action,
-  _operationName,
-  _operationType
-) => action();
 
-export function getSdk(
-  client: GraphQLClient,
-  withWrapper: SdkFunctionWrapper = defaultWrapper
-) {
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    createUser(
-      variables: CreateUserMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
-    ): Promise<CreateUserMutation> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<CreateUserMutation>(CreateUserDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'createUser',
-        'mutation'
-      );
+    createUser(variables: CreateUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUser', 'mutation');
     },
-    updateUserById(
-      variables: UpdateUserByIdMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
-    ): Promise<UpdateUserByIdMutation> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<UpdateUserByIdMutation>(
-            UpdateUserByIdDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
-        'updateUserById',
-        'mutation'
-      );
+    updateUserByAuthId(variables: UpdateUserByAuthIdMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateUserByAuthIdMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateUserByAuthIdMutation>(UpdateUserByAuthIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateUserByAuthId', 'mutation');
     },
-    findUserByEmail(
-      variables: FindUserByEmailQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
-    ): Promise<FindUserByEmailQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<FindUserByEmailQuery>(
-            FindUserByEmailDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
-        'findUserByEmail',
-        'query'
-      );
+    findUserByEmail(variables: FindUserByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<FindUserByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindUserByEmailQuery>(FindUserByEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findUserByEmail', 'query');
     },
-    findUserById(
-      variables: FindUserByIdQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
-    ): Promise<FindUserByIdQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<FindUserByIdQuery>(FindUserByIdDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'findUserById',
-        'query'
-      );
-    },
+    findUserById(variables: FindUserByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<FindUserByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindUserByIdQuery>(FindUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findUserById', 'query');
+    }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;

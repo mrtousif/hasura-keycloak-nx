@@ -1,5 +1,5 @@
 import { Logger, UseGuards } from '@nestjs/common';
-import { Args, Field, Int, ObjectType, Query, Resolver } from '@nestjs/graphql';
+import { Field, ObjectType, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from './current-user.decorator';
 import { GqlJwtAuthGuard } from './jwt.guard';
 import { AuthService } from './auth.service';

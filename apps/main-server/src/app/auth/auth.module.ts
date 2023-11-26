@@ -3,7 +3,6 @@ import { JwtModule } from '@nestjs/jwt';
 // import got from 'got';
 import { JwksClient } from 'jwks-rsa';
 
-import { config } from '../config/index';
 import { SdkModule } from '../sdk/sdk.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -21,7 +20,7 @@ const client = new JwksClient({
   cache: true,
   cacheMaxEntries: 5,
   cacheMaxAge: 600000, // Defaults to 10m
-  jwksUri: config.OPENID_CLIENT_PROVIDER_JWK_URL,
+  jwksUri: process.env.OPENID_CLIENT_PROVIDER_JWK_URL,
 });
 
 @Module({
