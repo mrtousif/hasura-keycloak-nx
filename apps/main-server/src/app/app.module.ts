@@ -1,5 +1,5 @@
 import { HasuraModule } from '@golevelup/nestjs-hasura';
-import { Module, Inject } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { LoggerModule } from 'nestjs-pino';
@@ -9,8 +9,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { SdkModule } from './sdk/sdk.module';
-import { EnvalidModule } from 'nestjs-envalid';
-import { validators } from './config';
+import { ENVALID, EnvalidModule } from 'nestjs-envalid';
+import { Config, validators } from './config';
 
 @Module({
   imports: [
@@ -34,16 +34,14 @@ import { validators } from './config';
       ide: true,
     }),
     HasuraModule.forRootAsync(HasuraModule, {
-      useFactory: () => {
-        const webhookSecret = process.env.NESTJS_EVENT_WEBHOOK_SHARED_SECRET;
-        const isDev = process.env.NODE_ENV === 'development';
-
+      inject: [ENVALID],
+      useFactory: (env: Config) => {
         return {
           webhookConfig: {
-            secretFactory: webhookSecret,
+            secretFactory: env.NESTJS_EVENT_WEBHOOK_SHARED_SECRET,
             secretHeader: 'nestjs-event-webhook',
           },
-          managedMetaDataConfig: isDev
+          managedMetaDataConfig: env.isDev
             ? {
                 metadataVersion: 'v3',
                 dirPath: join(process.cwd(), 'apps/hasura/metadata'),

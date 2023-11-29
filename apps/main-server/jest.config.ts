@@ -1,5 +1,6 @@
-/* eslint-disable */
-export default {
+import type { Config } from 'jest';
+
+const config: Config = {
   displayName: 'main-server',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
@@ -8,4 +9,7 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/main-server',
+  setupFilesAfterEnv: ['./jest.setup.ts'],
 };
+
+export default config;

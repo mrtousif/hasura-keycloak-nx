@@ -74,6 +74,12 @@ dependencies:
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
+  dotenv:
+    specifier: ^16.3.1
+    version: 16.3.1
+  dotenv-expand:
+    specifier: ^10.0.0
+    version: 10.0.0
   envalid:
     specifier: ^8.0.0
     version: 8.0.0

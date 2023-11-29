@@ -76,7 +76,7 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak_db
       KC_HOSTNAME: localhost
     ports:
-      - 8180:8080
+      - 8090:8080
     depends_on:
       - postgres
 # Uncomment following if you want to import realm configuration on start up

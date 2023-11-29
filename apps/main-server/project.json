@@ -61,13 +61,29 @@
     "kyselyGen": {
       "command": "dotenv -e apps/main-server/.env.development -- kysely-codegen"
     },
-    "seed-script": {
+    "seedScript": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/main-server",
         "commands": [
           "dotenv -e .env.development -- ts-node --project tsconfig.app.json seeder/index.ts"
         ],
+        "parallel": false
+      }
+    },
+    "migrateUp": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/main-server",
+        "commands": ["dbmate up"],
+        "parallel": false
+      }
+    },
+    "migrateDown": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/main-server",
+        "commands": ["dbmate down"],
         "parallel": false
       }
     }

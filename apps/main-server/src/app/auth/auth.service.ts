@@ -16,6 +16,7 @@ import {
 import { InjectEnvalid, Config } from '../config/index';
 import { GqlSdk, InjectSdk } from '../sdk/sdk.module';
 import { CreateUserDto } from './dto/create-user.dto';
+import { InjectOIDC } from './oidc';
 
 gql`
   mutation createUser($input: users_insert_input!) {
@@ -80,7 +81,7 @@ export class AuthService {
 
   constructor(
     @InjectSdk() private readonly sdk: GqlSdk,
-    @Inject('OIDC') openIdClient: Client,
+    @InjectOIDC() openIdClient: Client,
     @InjectEnvalid() private readonly env: Config
   ) {
     this.openIdClient = openIdClient;

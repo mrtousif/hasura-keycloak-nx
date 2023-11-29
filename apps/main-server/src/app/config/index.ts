@@ -1,5 +1,5 @@
 import { cleanEnv, port, str, url, email } from 'envalid';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { makeValidators, Static, ENVALID } from 'nestjs-envalid';
 
 const ENVS = {

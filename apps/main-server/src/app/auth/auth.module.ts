@@ -7,10 +7,10 @@ import { SdkModule } from '../sdk/sdk.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
-import { buildOpenIdClient } from './oidc';
+import { buildOpenIdClient, OIDC } from './oidc';
 
 const OidcFactory = {
-  provide: 'OIDC',
+  provide: OIDC,
   useFactory: async () => {
     return await buildOpenIdClient();
   },

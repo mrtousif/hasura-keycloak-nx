@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import { config } from '../config/index';
 import { Issuer } from 'openid-client';
 
@@ -22,3 +23,6 @@ export const buildOpenIdClient = async () => {
     client_secret: config.OPENID_CLIENT_REGISTRATION_LOGIN_CLIENT_SECRET,
   });
 };
+
+export const OIDC = 'OIDC';
+export const InjectOIDC = () => Inject(OIDC);
