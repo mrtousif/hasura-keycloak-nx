@@ -30,6 +30,7 @@ export class AuthController {
   @Get('/user')
   async user(@Request() req: FastifyRequestType) {
     const user = await this.authService.getUserInfo(req.accessToken);
+
     return {
       user,
       tokens: req.cookies,
@@ -42,7 +43,7 @@ export class AuthController {
     @Headers() headers: Headers,
     @Response() res: FastifyReply
   ) {
-    res.redirect(303, '/api/auth/user');
+    res.redirect(303, '/auth/user');
   }
 
   @Get('/logout')

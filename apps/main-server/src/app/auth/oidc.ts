@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { config } from '../config/index';
 import { Issuer } from 'openid-client';
+import { JwksClient } from 'jwks-rsa';
 
 export interface HasuraJwtClaims<
   CustomClaims extends Record<string, string | string[]> = {}
@@ -26,3 +27,10 @@ export const buildOpenIdClient = async () => {
 
 export const OIDC = 'OIDC';
 export const InjectOIDC = () => Inject(OIDC);
+
+export const jwksClient = new JwksClient({
+  cache: true,
+  cacheMaxEntries: 5,
+  cacheMaxAge: 600000, // Defaults to 10m
+  jwksUri: config.OPENID_CLIENT_PROVIDER_JWK_URL,
+});

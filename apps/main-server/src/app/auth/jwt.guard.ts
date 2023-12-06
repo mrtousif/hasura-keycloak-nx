@@ -13,10 +13,12 @@ import { TokenSet, UserinfoResponse, generators } from 'openid-client';
 
 import { InjectEnvalid, Config } from '../config/index';
 import { AuthService } from './auth.service';
+import { jwksClient } from './oidc';
 
 export type FastifyRequestType = FastifyRequest & {
   user?: UserJWT | UserinfoResponse;
   accessToken?: string;
+  refreshToken?: string;
 };
 
 @Injectable()
@@ -35,12 +37,14 @@ export class JwtGuard implements CanActivate {
     const sessionKey = 'oidc';
     try {
       let token = this.getToken(request);
-
-      const user = this.jwtService.verify<UserJWT>(token);
+      const key = await jwksClient.getSigningKey();
+      const user = await this.jwtService.verifyAsync<UserJWT>(token, {
+        secret: key.getPublicKey(),
+      });
       this.logger.debug({ user }, `USER:${user.sub}`);
       const refreshToken = request.cookies['refresh_token'];
 
-      if (Date.now() >= user.exp * 1000 && refreshToken) {
+      if (refreshToken?.length > 1 && Date.now() >= user.exp * 1000) {
         const result = await this.authService.refreshToken(refreshToken);
         response.setCookie('access_token', `Bearer ${result.access_token}`);
         response.setCookie('refresh_token', result.refresh_token);
@@ -50,6 +54,7 @@ export class JwtGuard implements CanActivate {
 
       request.user = user;
       request.accessToken = token;
+      request.refreshToken = refreshToken;
       return true;
     } catch (e) {
       const session = request.session.get(sessionKey);

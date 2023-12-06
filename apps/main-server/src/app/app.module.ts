@@ -2,7 +2,6 @@ import { HasuraModule } from '@golevelup/nestjs-hasura';
 import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
-import { LoggerModule } from 'nestjs-pino';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 
 import { AppController } from './app.controller';
@@ -11,20 +10,13 @@ import { AuthModule } from './auth/auth.module';
 import { SdkModule } from './sdk/sdk.module';
 import { ENVALID, EnvalidModule } from 'nestjs-envalid';
 import { Config, validators } from './config';
+import { NestPinoModule } from './pino.module';
 
 @Module({
   imports: [
     AuthModule,
     SdkModule,
-    LoggerModule.forRoot({
-      pinoHttp: {
-        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-        transport:
-          process.env.NODE_ENV !== 'production'
-            ? { target: 'pino-pretty' }
-            : undefined,
-      },
-    }),
+    NestPinoModule,
     EnvalidModule.forRoot({ validators, isGlobal: true }),
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,

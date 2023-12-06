@@ -1,4 +1,4 @@
-import { Logger } from 'nestjs-pino';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { NestFactory } from '@nestjs/core';
 import fastifyCookie from '@fastify/cookie';
 import {
@@ -29,15 +29,11 @@ async function bootstrap() {
 
   const logger = app.get(Logger);
   app.useLogger(logger);
-
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
   const port = config.PORT;
   await app.listen(port);
-  logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+  logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
 bootstrap();
