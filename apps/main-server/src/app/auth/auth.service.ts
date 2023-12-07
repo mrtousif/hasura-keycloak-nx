@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { gql } from 'graphql-request';
 import { IncomingMessage } from 'http';
 import {
@@ -73,7 +68,19 @@ export interface LoginOrRegisterUserOutput {
   token?: string;
   error?: string;
 }
+export interface IUserInfo {
+  sub: string;
+  email_verified: boolean;
+  'https://hasura.io/jwt/claims': HTTPSHasuraIoJwtClaims;
+  preferred_username: string;
+  email: string;
+}
 
+export interface HTTPSHasuraIoJwtClaims {
+  'x-hasura-default-role': string;
+  'x-hasura-user-id': string;
+  'x-hasura-allowed-roles': string[];
+}
 @Injectable()
 export class AuthService {
   openIdClient: Client;
@@ -87,8 +94,8 @@ export class AuthService {
     this.openIdClient = openIdClient;
   }
 
-  async getUserInfo(accessToken: string): Promise<UserinfoResponse> {
-    return await this.openIdClient.userinfo(accessToken);
+  async getUserInfo(accessToken: string) {
+    return await this.openIdClient.userinfo<IUserInfo>(accessToken);
   }
 
   async callback(request: IncomingMessage, checks: OpenIDCallbackChecks) {

@@ -7,7 +7,7 @@ import {
   UseGuards,
   Headers,
 } from '@nestjs/common';
-import type { FastifyReply } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 import { Issuer } from 'openid-client';
 import { Config, InjectEnvalid } from '../config/index';
 import { AuthService } from './auth.service';
@@ -48,7 +48,7 @@ export class AuthController {
 
   @Get('/logout')
   async logout(
-    @Request() req: FastifyRequestType,
+    @Request() req: FastifyRequest,
     @Response({ passthrough: true }) res: FastifyReply
   ) {
     try {

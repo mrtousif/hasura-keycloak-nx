@@ -9,14 +9,14 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { IncomingMessage } from 'http';
-import { TokenSet, UserinfoResponse, generators } from 'openid-client';
+import { TokenSet, generators } from 'openid-client';
 
 import { InjectEnvalid, Config } from '../config/index';
-import { AuthService } from './auth.service';
+import { AuthService, IUserInfo } from './auth.service';
 import { jwksClient } from './oidc';
 
 export type FastifyRequestType = FastifyRequest & {
-  user?: UserJWT | UserinfoResponse;
+  user?: UserJWT | IUserInfo;
   accessToken?: string;
   refreshToken?: string;
 };
@@ -98,7 +98,7 @@ export class JwtGuard implements CanActivate {
   }
 
   private redirectToLogin(
-    request: FastifyRequestType,
+    request: FastifyRequest,
     response: FastifyReply,
     sessionKey: string
   ) {
