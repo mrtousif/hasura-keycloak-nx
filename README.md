@@ -7,7 +7,7 @@
 - Prerequisite:
 
   - Docker
-  - NodeJS v14 or later
+  - NodeJS v18 or later
   - Pnpm
   - [Dbmate](https://github.com/amacneil/dbmate) (used for handling migrations)
   - [Task](https://taskfile.dev/)
@@ -16,13 +16,14 @@
 
   1. `pnpm install`
   2. `task composeUp` - Will start the containers defined in docker-compose file
-  3. `nx run main-server:migrateUp` - Run db migration
-  4. `nx run main-server:kyselyGen` - Generate code for kysely
-  5. `nx run main-server:seedScript`- Run the seeder
+  3. `npx nx run main-server:migrateUp` - Run db migration
+  4. `npx nx run main-server:kyselyGen` - Generate code for kysely
+  5. `npx nx run main-server:seedScript`- Run the seeder
+  6. `pnpm hasura:apply` - Apply hasura metadata
 
 ## Start the app
 
-To start the development server run `nx run main-server:dev`. Open your browser and navigate to http://localhost:7000/
+To start the development server run `npx nx run main-server:dev`. Open your browser and navigate to http://localhost:7000/
 
 ## Generate code
 
