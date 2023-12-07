@@ -75,7 +75,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/main-server",
-        "commands": ["dbmate up"],
+        "commands": ["dotenv -e .env.development -- dbmate up"],
         "parallel": false
       }
     },
@@ -83,7 +83,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/main-server",
-        "commands": ["dbmate down"],
+        "commands": ["dotenv -e .env.development -- dbmate down"],
         "parallel": false
       }
     }

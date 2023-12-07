@@ -112,6 +112,10 @@ export class AuthService {
     return this.openIdClient.authorizationUrl(params);
   }
 
+  introspect(token: string) {
+    return this.openIdClient.introspect(token);
+  }
+
   refreshToken(refreshToekn: string) {
     return this.openIdClient.refresh(refreshToekn);
   }
@@ -139,7 +143,7 @@ export class AuthService {
     } catch (error) {
       if (error.message.includes('Uniqueness violation')) {
         this.logger.debug({ authId: input.authId }, 'Updating User');
-        const { email } = input;
+        const { email = 'default@email.com' } = input;
         this.sdk.updateUserByAuthId({
           auth_id: input.authId,
           input: { email },

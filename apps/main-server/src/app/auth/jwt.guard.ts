@@ -41,15 +41,22 @@ export class JwtGuard implements CanActivate {
       const user = await this.jwtService.verifyAsync<UserJWT>(token, {
         secret: key.getPublicKey(),
       });
-      this.logger.debug({ user }, `USER:${user.sub}`);
+      this.logger.debug({ user: { exp: user.exp } }, `USER:${user.sub}`);
       const refreshToken = request.cookies['refresh_token'];
+      const { active } = await this.authService.introspect(refreshToken);
 
-      if (refreshToken?.length > 1 && Date.now() >= user.exp * 1000) {
-        const result = await this.authService.refreshToken(refreshToken);
-        response.setCookie('access_token', `Bearer ${result.access_token}`);
-        response.setCookie('refresh_token', result.refresh_token);
-        response.setCookie('id_token', result.id_token);
-        token = result.access_token;
+      if (active != true) {
+        this.redirectToLogin(request, response, sessionKey);
+      } else if (refreshToken?.length > 1 && Date.now() >= user.exp * 1000) {
+        try {
+          const result = await this.authService.refreshToken(refreshToken);
+          response.setCookie('access_token', `Bearer ${result.access_token}`);
+          response.setCookie('refresh_token', result.refresh_token);
+          response.setCookie('id_token', result.id_token);
+          token = result.access_token;
+        } catch (error) {
+          this.redirectToLogin(request, response, sessionKey);
+        }
       }
 
       request.user = user;
@@ -105,6 +112,9 @@ export class JwtGuard implements CanActivate {
     if (!response.redirect) {
       throw new UnauthorizedException();
     }
+    try {
+      delete request.session[sessionKey];
+    } catch (err) {}
     const params = {
       state: generators.state(),
       nonce: generators.nonce(),

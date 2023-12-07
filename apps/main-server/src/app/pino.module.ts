@@ -7,6 +7,7 @@ import { randomUUID } from 'crypto';
 // Fields to redact from logs
 const redactFields = [
   'req.headers.authorization',
+  'req.headers.cookie',
   'req.body.password',
   'req.body.confirmPassword',
 ];
@@ -14,7 +15,7 @@ const basePinoOptions = {
   translateTime: true,
   ignore: 'pid,hostname',
   //   singleLine: true,
-  //   redact: redactFields,
+  redact: redactFields,
 };
 
 @Module({
@@ -30,6 +31,7 @@ const basePinoOptions = {
           customProps: (_request, _response) => ({
             context: 'HTTP',
           }),
+          quietReqLogger: true,
           genReqId: function (req, res) {
             const existingID = req.id ?? req.headers['x-request-id'];
             if (existingID) return existingID;

@@ -48,17 +48,17 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
       HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 30
-  #   pgweb:
-  #     ## To view tables in Postgres
-  #     container_name: pgweb
-  #     image: sosedoff/pgweb:latest
-  #     restart: unless-stopped
-  #     ports:
-  #       - '8081:8081'
-  #     environment:
-  #       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
-  #     depends_on:
-  #       - postgres
+  # To view tables in Postgres
+  # pgweb:
+  #   container_name: pgweb
+  #   image: sosedoff/pgweb:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - '8081:8081'
+  #   environment:
+  #     - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+  #   depends_on:
+  #     - postgres
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:22.0.5
@@ -79,6 +79,6 @@ services:
       - 8090:8080
     depends_on:
       - postgres
-# Uncomment following if you want to import realm configuration on start up
-# volumes:
-#     - ./realm-export.json:/opt/keycloak/data/import/realm.json:ro
+    # Uncomment following if you want to import realm configuration on start up
+    # volumes:
+    #   - ./realm-export.json:/opt/keycloak/data/import/realm.json:ro
